@@ -2,13 +2,14 @@
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Version = Lucene.Net.Util.Version;
-using System.Collections.Generic;
+using Lucene.Net.Analysis.Hunspell;
+using System.Text;
 
 namespace SlovakAnalyzer
 {
     public class SlovakAnalyzer : StandardAnalyzer
     {
-        public SlovakAnalyzer() : base(Version.LUCENE_30, SlovakStopWords)
+        public SlovakAnalyzer() : base(Version.LUCENE_29, new StringReader(Properties.Resources.sk_SK_stopwords))
         {
 
         }
@@ -16,113 +17,27 @@ namespace SlovakAnalyzer
         public override TokenStream TokenStream(string fieldName, TextReader reader)
         {
             TokenStream stream = base.TokenStream(fieldName, reader);
+            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_29), stream, STOP_WORDS_SET);
+            using (var affixStream = GenerateStreamFromString(Encoding.UTF8.GetString(Properties.Resources.sk_SK_aff)))
+            using (var dictionaryStream = GenerateStreamFromString(Properties.Resources.sk_SK_dic))
+            {
+                var dict = new HunspellDictionary(affixStream, dictionaryStream);
+                stream = new HunspellStemFilter(stream, dict);
+            }
             stream = new LowerCaseFilter(stream);
-            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_30), stream, STOP_WORDS_SET);
+            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_29), stream, STOP_WORDS_SET);   
 
             return stream;
         }
 
-        private static HashSet<string> SlovakStopWords = new HashSet<string>(new string[] {
-            "a",
-            "aby",
-            "aj",
-            "ako",
-            "ale",
-            "alebo",
-            "ani",
-            "asi",
-            "až",
-            "áno",
-            "bez",
-            "buď",
-            "by",
-            "cez",
-            "či",
-            "čo",
-            "ešte",
-            "ho",
-            "i",
-            "iba",
-            "ich",
-            "ja",
-            "je",
-            "jeho",
-            "jej",
-            "ju",
-            "k",
-            "ku",
-            "kam",
-            "kde",
-            "keď",
-            "kto",
-            "menej",
-            "mi",
-            "moja",
-            "moje",
-            "môj",
-            "my",
-            "nad",
-            "nám",
-            "než",
-            "nič",
-            "nie",
-            "o",
-            "od",
-            "on",
-            "ona",
-            "oni",
-            "ono",
-            "po",
-            "pod",
-            "podľa",
-            "pokiaľ",
-            "potom",
-            "práve",
-            "prečo",
-            "pred",
-            "preto",
-            "pretože",
-            "pri",
-            "s",
-            "sa",
-            "si",
-            "sme",
-            "so",
-            "som",
-            "späť",
-            "ste",
-            "sú",
-            "ta",
-            "tak",
-            "takže",
-            "tam",
-            "tá",
-            "táto",
-            "teda",
-            "ten",
-            "tento",
-            "tieto",
-            "tiež",
-            "to",
-            "toho",
-            "tom",
-            "tomto",
-            "toto",
-            "tu",
-            "túto",
-            "ty",
-            "tým",
-            "týmto",
-            "už",
-            "v",
-            "vám",
-            "viac",
-            "vo",
-            "však",
-            "vy",
-            "z",
-            "za",
-            "zo",
-        });
+        private static Stream GenerateStreamFromString(string s)
+        {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
     }
 }
