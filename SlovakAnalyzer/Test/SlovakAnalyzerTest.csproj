@@ -45,9 +45,6 @@
     <Reference Include="Lucene.Net, Version=2.9.4.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.2.9.4.1\lib\net40\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net.Analysis.Hunspell, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lucene.Net.Analysis.Hunspell.1.0.2\lib\Lucene.Net.Analysis.Hunspell.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.1.11\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -66,6 +63,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lucene.Net.Analysis.Hunspell\Lucene.Net.Analysis.Hunspell.csproj">
+      <Project>{792dcb49-ffea-45c3-bcd8-af32efd37ad6}</Project>
+      <Name>Lucene.Net.Analysis.Hunspell</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SlovakAnalyzer\SlovakAnalyzer.csproj">
       <Project>{282469de-1138-47fc-ab4c-fcf72c07239f}</Project>
       <Name>SlovakAnalyzer</Name>

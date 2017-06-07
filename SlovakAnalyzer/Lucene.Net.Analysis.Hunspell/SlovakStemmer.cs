@@ -1,11 +1,9 @@
-﻿using Lucene.Net.Search.Vectorhighlight;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SlovakAnalyzer
+namespace Lucene.Net.Analysis.Hunspell
 {
     public class SlovakStemmer
     {

@@ -39,9 +39,6 @@
     <Reference Include="Lucene.Net, Version=2.9.4.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.2.9.4.1\lib\net40\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net.Analysis.Hunspell, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lucene.Net.Analysis.Hunspell.1.0.2\lib\Lucene.Net.Analysis.Hunspell.dll</HintPath>
-    </Reference>
     <Reference Include="Raven.Abstractions, Version=3.5.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.3.5.3\lib\net45\Raven.Abstractions.dll</HintPath>
     </Reference>
@@ -71,7 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SlovakNounAnalyzer.cs" />
     <Compile Include="SlovakNounFilter.cs" />
-    <Compile Include="SlovakStemmer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\packages\RavenDB.Database.3.5.3\tools\Raven.Studio.Html5.zip">
@@ -99,6 +95,12 @@
     <None Include="Resources\sk_SK_stopwords.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lucene.Net.Analysis.Hunspell\Lucene.Net.Analysis.Hunspell.csproj">
+      <Project>{792dcb49-ffea-45c3-bcd8-af32efd37ad6}</Project>
+      <Name>Lucene.Net.Analysis.Hunspell</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

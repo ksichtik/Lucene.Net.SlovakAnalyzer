@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Test
+namespace SLovakAnalyzerTest
 {
     [TestClass]
     public class AnalyzerTest
@@ -15,7 +15,7 @@ namespace Test
         public void Slovak_analyzer_test()
         {
             var inputString = "Keďže poľnohospodári Finstatu, Chirany, Lega, U. S. Steelu Košice a dubu z finstat.sk v Zambii preferujú skôr všestranné a spoľahlivé traktory s ľahkou údržbou...";
-            var expectedString = "keďže poľnohospodár finstatu chirany lego u steelu košice dub finstat.sk zambii preferovať skôr všestranný spoľahlivý traktor ľahký údržba";
+            var expectedString = "keďže poľnohospodár finstat chiran lego u steel košic dub finstat.sk zamb preferovať skôr všestranný spoľahlivý traktor ľahký údržba";
             List<string> tokens = new List<string>();
             var analyzer = new SlovakAnalyzer.SlovakAnalyzer();
             var tokenStream = analyzer.TokenStream(null, new StringReader(inputString));

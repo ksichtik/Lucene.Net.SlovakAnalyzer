@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlovakAnalyzer", "SlovakAnalyzer\SlovakAnalyzer.csproj", "{282469DE-1138-47FC-AB4C-FCF72C07239F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2ADC4E31-C645-48D6-889F-0939BB64F4EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlovakAnalyzerTest", "Test\SlovakAnalyzerTest.csproj", "{2ADC4E31-C645-48D6-889F-0939BB64F4EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucene.Net.Analysis.Hunspell", "Lucene.Net.Analysis.Hunspell\Lucene.Net.Analysis.Hunspell.csproj", "{792DCB49-FFEA-45C3-BCD8-AF32EFD37AD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{2ADC4E31-C645-48D6-889F-0939BB64F4EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ADC4E31-C645-48D6-889F-0939BB64F4EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ADC4E31-C645-48D6-889F-0939BB64F4EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{792DCB49-FFEA-45C3-BCD8-AF32EFD37AD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{792DCB49-FFEA-45C3-BCD8-AF32EFD37AD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{792DCB49-FFEA-45C3-BCD8-AF32EFD37AD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{792DCB49-FFEA-45C3-BCD8-AF32EFD37AD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
