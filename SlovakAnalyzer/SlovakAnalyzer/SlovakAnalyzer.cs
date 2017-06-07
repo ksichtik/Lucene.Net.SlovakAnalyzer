@@ -4,6 +4,8 @@ using Lucene.Net.Analysis.Standard;
 using Version = Lucene.Net.Util.Version;
 using Lucene.Net.Analysis.Hunspell;
 using System.Text;
+using System.Collections.Generic;
+using Lucene.Net.Analysis.Tokenattributes;
 
 namespace SlovakAnalyzer
 {
@@ -28,6 +30,25 @@ namespace SlovakAnalyzer
             stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_29), stream, STOP_WORDS_SET);   
 
             return stream;
+        }
+
+        public string ParseQueryString(string queryString)
+        {
+            List<string> tokens = new List<string>();
+            var tokenStream = TokenStream(null, new StringReader(queryString));
+            var offsetAttribute = (OffsetAttribute)tokenStream.GetAttribute(typeof(OffsetAttribute));
+            var termAttribute = (TermAttribute)tokenStream.GetAttribute(typeof(TermAttribute));
+
+            tokenStream.Reset();
+            while (tokenStream.IncrementToken())
+            {
+                int startOffset = offsetAttribute.StartOffset();
+                int endOffset = offsetAttribute.EndOffset();
+                string term = termAttribute.Term();
+                tokens.Add(term);
+            }
+
+            return string.Join(" ", tokens);
         }
 
         private static Stream GenerateStreamFromString(string s)
