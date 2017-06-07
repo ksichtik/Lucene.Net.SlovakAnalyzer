@@ -11,7 +11,7 @@ namespace SlovakAnalyzer
 {
     public class SlovakAnalyzer : StandardAnalyzer
     {
-        public SlovakAnalyzer() : base(Version.LUCENE_29, new StringReader(Properties.Resources.sk_SK_stopwords))
+        public SlovakAnalyzer() : base(Version.LUCENE_30, new StringReader(Properties.Resources.sk_SK_stopwords))
         {
 
         }
@@ -19,7 +19,7 @@ namespace SlovakAnalyzer
         public override TokenStream TokenStream(string fieldName, TextReader reader)
         {
             TokenStream stream = base.TokenStream(fieldName, reader);
-            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_29), stream, STOP_WORDS_SET);
+            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_30), stream, STOP_WORDS_SET);
             using (var affixStream = GenerateStreamFromString(Encoding.UTF8.GetString(Properties.Resources.sk_SK_aff)))
             using (var dictionaryStream = GenerateStreamFromString(Properties.Resources.sk_SK_dic))
             {
@@ -27,7 +27,7 @@ namespace SlovakAnalyzer
                 stream = new HunspellStemFilter(stream, dict);
             }
             stream = new LowerCaseFilter(stream);
-            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_29), stream, STOP_WORDS_SET);   
+            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_30), stream, STOP_WORDS_SET);   
 
             return stream;
         }
@@ -36,15 +36,15 @@ namespace SlovakAnalyzer
         {
             List<string> tokens = new List<string>();
             var tokenStream = TokenStream(null, new StringReader(queryString));
-            var offsetAttribute = (OffsetAttribute)tokenStream.GetAttribute(typeof(OffsetAttribute));
-            var termAttribute = (TermAttribute)tokenStream.GetAttribute(typeof(TermAttribute));
+            var offsetAttribute = tokenStream.GetAttribute<IOffsetAttribute>();
+            var termAttribute = tokenStream.GetAttribute<ITermAttribute>();
 
             tokenStream.Reset();
             while (tokenStream.IncrementToken())
             {
-                int startOffset = offsetAttribute.StartOffset();
-                int endOffset = offsetAttribute.EndOffset();
-                string term = termAttribute.Term();
+                int startOffset = offsetAttribute.StartOffset;
+                int endOffset = offsetAttribute.EndOffset;
+                string term = termAttribute.Term;
                 tokens.Add(term);
             }
 

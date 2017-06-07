@@ -19,15 +19,15 @@ namespace SLovakAnalyzerTest
             List<string> tokens = new List<string>();
             var analyzer = new SlovakAnalyzer.SlovakAnalyzer();
             var tokenStream = analyzer.TokenStream(null, new StringReader(inputString));
-            var offsetAttribute = (OffsetAttribute)tokenStream.GetAttribute(typeof(OffsetAttribute));
-            var termAttribute = (TermAttribute)tokenStream.GetAttribute(typeof(TermAttribute));
+            var offsetAttribute = tokenStream.GetAttribute<IOffsetAttribute>();
+            var termAttribute = tokenStream.GetAttribute<ITermAttribute>();
 
             tokenStream.Reset();
             while (tokenStream.IncrementToken())
             {
-                int startOffset = offsetAttribute.StartOffset();
-                int endOffset = offsetAttribute.EndOffset();
-                String term = termAttribute.Term();
+                int startOffset = offsetAttribute.StartOffset;
+                int endOffset = offsetAttribute.EndOffset;
+                String term = termAttribute.Term;
                 tokens.Add(term);
             }
 
@@ -42,15 +42,15 @@ namespace SLovakAnalyzerTest
             List<string> tokens = new List<string>();
             var analyzer = new SlovakAnalyzer.SlovakNounAnalyzer();
             var tokenStream = analyzer.TokenStream(null, new StringReader(inputString));
-            var offsetAttribute = (OffsetAttribute)tokenStream.GetAttribute(typeof(OffsetAttribute));
-            var termAttribute = (TermAttribute)tokenStream.GetAttribute(typeof(TermAttribute));
+            var offsetAttribute = tokenStream.GetAttribute<IOffsetAttribute>();
+            var termAttribute = tokenStream.GetAttribute<ITermAttribute>();
 
             tokenStream.Reset();
             while (tokenStream.IncrementToken())
             {
-                int startOffset = offsetAttribute.StartOffset();
-                int endOffset = offsetAttribute.EndOffset();
-                String term = termAttribute.Term();
+                int startOffset = offsetAttribute.StartOffset;
+                int endOffset = offsetAttribute.EndOffset;
+                String term = termAttribute.Term;
                 tokens.Add(term);
             }
 

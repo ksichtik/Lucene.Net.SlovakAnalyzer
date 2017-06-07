@@ -23,8 +23,8 @@ namespace Lucene.Net.Analysis.Hunspell {
     ///   word having multiple stems, this filter can emit multiple tokens for each consumed token.
     /// </summary>
     public class HunspellStemFilter : TokenFilter {
-        private readonly TermAttribute _termAtt;
-        private readonly PositionIncrementAttribute _posIncAtt;
+        private readonly ITermAttribute _termAtt;
+        private readonly IPositionIncrementAttribute _posIncAtt;
         private readonly HunspellStemmer _stemmer;
         private readonly SlovakStemmer _slovakStemmer;
 
@@ -42,8 +42,8 @@ namespace Lucene.Net.Analysis.Hunspell {
         /// <param name="dedup">true if only unique terms should be output.</param>
         public HunspellStemFilter(TokenStream input, HunspellDictionary dictionary, Boolean dedup = true)
             : base(input) {
-            _posIncAtt = (PositionIncrementAttribute)AddAttribute(typeof(PositionIncrementAttribute));
-            _termAtt = (TermAttribute)AddAttribute(typeof(TermAttribute));
+            _posIncAtt = AddAttribute<IPositionIncrementAttribute>();
+            _termAtt = AddAttribute<ITermAttribute>();
 
             _dedup = dedup;
             _stemmer = new HunspellStemmer(dictionary);
@@ -55,7 +55,7 @@ namespace Lucene.Net.Analysis.Hunspell {
                 var nextStem = _buffer.Dequeue();
 
                 RestoreState(_savedState);
-                _posIncAtt.SetPositionIncrement(0);
+                _posIncAtt.PositionIncrement = 0;
                 _termAtt.SetTermBuffer(nextStem.Stem, 0, nextStem.StemLength);
                 return true;
             }
@@ -64,8 +64,8 @@ namespace Lucene.Net.Analysis.Hunspell {
                 return false;
 
             var newTerms = _dedup
-                               ? _stemmer.UniqueStems(_termAtt.Term())
-                               : _stemmer.Stem(_termAtt.Term());
+                               ? _stemmer.UniqueStems(_termAtt.Term)
+                               : _stemmer.Stem(_termAtt.Term);
             foreach (var newTerm in newTerms)
                 _buffer.Enqueue(newTerm);
 

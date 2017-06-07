@@ -9,7 +9,7 @@ namespace SlovakAnalyzer
 {
     public class SlovakNounAnalyzer : StandardAnalyzer
     {
-        public SlovakNounAnalyzer() : base(Version.LUCENE_29, new StringReader(Properties.Resources.sk_SK_stopwords))
+        public SlovakNounAnalyzer() : base(Version.LUCENE_30, new StringReader(Properties.Resources.sk_SK_stopwords))
         {
 
         }
@@ -17,10 +17,10 @@ namespace SlovakAnalyzer
         public override TokenStream TokenStream(string fieldName, TextReader reader)
         {
             TokenStream stream = base.TokenStream(fieldName, reader);
-            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_29), stream, STOP_WORDS_SET);
+            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_30), stream, STOP_WORDS_SET);
             stream = new SlovakNounFilter(stream);
             stream = new LowerCaseFilter(stream);
-            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_29), stream, STOP_WORDS_SET);
+            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_30), stream, STOP_WORDS_SET);
 
             return stream;
         }

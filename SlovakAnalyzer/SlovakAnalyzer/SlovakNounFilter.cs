@@ -1,22 +1,19 @@
 ﻿using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Hunspell;
 using Lucene.Net.Analysis.Tokenattributes;
-using Lucene.Net.Index;
-using Lucene.Net.Search;
-using Lucene.Net.Util;
 
 namespace SlovakAnalyzer
 {
     public class SlovakNounFilter : TokenFilter
     {
-        private readonly TermAttribute termAtt;
-        private readonly OffsetAttribute posAtt;
+        private readonly ITermAttribute termAtt;
+        private readonly IOffsetAttribute posAtt;
         private readonly SlovakStemmer stemmer;
 
         public SlovakNounFilter(TokenStream input) : base(input)
         {
-            termAtt = (TermAttribute)AddAttribute(typeof(TermAttribute));
-            posAtt = (OffsetAttribute)AddAttribute(typeof(OffsetAttribute));
+            termAtt = AddAttribute<ITermAttribute>();
+            posAtt = AddAttribute<IOffsetAttribute>();
             stemmer = new SlovakStemmer();
         }
 
