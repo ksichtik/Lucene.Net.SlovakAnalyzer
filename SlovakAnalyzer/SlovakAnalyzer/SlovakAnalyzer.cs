@@ -6,6 +6,7 @@ using Lucene.Net.Analysis.Hunspell;
 using System.Text;
 using System.Collections.Generic;
 using Lucene.Net.Analysis.Tokenattributes;
+using System.Linq;
 
 namespace SlovakAnalyzer
 {
@@ -48,7 +49,8 @@ namespace SlovakAnalyzer
                 tokens.Add(term);
             }
 
-            return string.Join(" ", tokens);
+            var resultString =  string.Join(" ", tokens);
+            return new string(resultString.Where(c => !char.IsControl(c)).ToArray());
         }
 
         private static Stream GenerateStreamFromString(string s)
