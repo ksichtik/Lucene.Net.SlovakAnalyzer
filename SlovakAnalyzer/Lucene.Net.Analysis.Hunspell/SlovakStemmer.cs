@@ -22,9 +22,9 @@ namespace Lucene.Net.Analysis.Hunspell
         {
             Term = term;
             TermLength = length;
-            AddSuffix(string.Empty);
+            //AddSuffix(string.Empty);
 
-            RemovePrefix();
+            //RemovePrefix();
             RemoveSuffix();
 
             stemmedTerm = Term;
@@ -49,22 +49,22 @@ namespace Lucene.Net.Analysis.Hunspell
                 {
                     if (EndsWith(suffix))
                     {
-                        if (ContainsEI(suffix))
-                        {
-                            RemovePart(TermLength - suffix.Length, suffix.Length);
-                            ChangeDTNL();
-                            return;
-                        }
+                        //if (ContainsEI(suffix))
+                        //{
+                        //    RemovePart(TermLength - suffix.Length, suffix.Length);
+                        //    ChangeDTNL();
+                        //    return;
+                        //}
 
-                        if (suffix.StartsWith("i"))
-                        {
-                            if (Foreign(suffix))
-                            {
-                                RemovePart(TermLength - suffix.Length, suffix.Length);
-                                AddSuffix("i");
-                                return;
-                            }
-                        }
+                        //if (suffix.StartsWith("i"))
+                        //{
+                        //    if (Foreign(suffix))
+                        //    {
+                        //        RemovePart(TermLength - suffix.Length, suffix.Length);
+                        //        AddSuffix("i");
+                        //        return;
+                        //    }
+                        //}
 
                         if (Overstemming(suffix))
                         {
@@ -77,70 +77,70 @@ namespace Lucene.Net.Analysis.Hunspell
                 }
             }
 
-            // er -> peter, sveter....
-            var _suffix = "er";
-            if (EndsWith(_suffix)) { 
-                RemovePart(TermLength - _suffix.Length, _suffix.Length);
-                AddSuffix("r");
-                return;
-            }
+            //// er -> peter, sveter....
+            //var _suffix = "er";
+            //if (EndsWith(_suffix)) { 
+            //    RemovePart(TermLength - _suffix.Length, _suffix.Length);
+            //    AddSuffix("r");
+            //    return;
+            //}
 
-            //ok -> sviatok, odpadok....
-            _suffix = "ok";
-            if (EndsWith(_suffix))
-            {
-                RemovePart(TermLength - _suffix.Length, _suffix.Length);
-                AddSuffix("k");
-                return;
-            }
+            ////ok -> sviatok, odpadok....
+            //_suffix = "ok";
+            //if (EndsWith(_suffix))
+            //{
+            //    RemovePart(TermLength - _suffix.Length, _suffix.Length);
+            //    AddSuffix("k");
+            //    return;
+            //}
 
-            //zen -> podobizen, bielizen....
-            _suffix = "zeň";
-            if (EndsWith(_suffix))
-            {
-                _suffix = "eň";
-                RemovePart(TermLength - _suffix.Length, _suffix.Length);
-                AddSuffix("ň");
-                return;
-            }
+            ////zen -> podobizen, bielizen....
+            //_suffix = "zeň";
+            //if (EndsWith(_suffix))
+            //{
+            //    _suffix = "eň";
+            //    RemovePart(TermLength - _suffix.Length, _suffix.Length);
+            //    AddSuffix("ň");
+            //    return;
+            //}
 
-            //na ol -> kotol....
-            _suffix = "ol";
-            if (EndsWith(_suffix))
-            {
-                RemovePart(TermLength - _suffix.Length, _suffix.Length);
-                AddSuffix("l");
-                return;
-            }
+            ////na ol -> kotol....
+            //_suffix = "ol";
+            //if (EndsWith(_suffix))
+            //{
+            //    RemovePart(TermLength - _suffix.Length, _suffix.Length);
+            //    AddSuffix("l");
+            //    return;
+            //}
 
-            //ic -> matematic (matematik, matematici)... (pracovnici vs slnecnic)
-            _suffix = "ic";
-            if (EndsWith(_suffix))
-            {
-                _suffix = "c";
-                RemovePart(TermLength - _suffix.Length, _suffix.Length);
-                AddSuffix("k");
-                return;
-            }
+            ////ic -> matematic (matematik, matematici)... (pracovnici vs slnecnic)
+            //_suffix = "ic";
+            //if (EndsWith(_suffix))
+            //{
+            //    _suffix = "c";
+            //    RemovePart(TermLength - _suffix.Length, _suffix.Length);
+            //    AddSuffix("k");
+            //    return;
+            //}
 
-            //ec -> tanec, obec....
-            _suffix = "ec";
-            if (EndsWith(_suffix))
-            {
-                RemovePart(TermLength - _suffix.Length, _suffix.Length);
-                AddSuffix("c");
-                return;
-            }
+            ////ec -> tanec, obec....
+            //_suffix = "ec";
+            //if (EndsWith(_suffix))
+            //{
+            //    RemovePart(TermLength - _suffix.Length, _suffix.Length);
+            //    AddSuffix("c");
+            //    return;
+            //}
 
-            //um -> studium, stadium....
-            _suffix = "um";
-            if (EndsWith(_suffix))
-            {
-                RemovePart(TermLength - _suffix.Length, _suffix.Length);
-                return;
-            }
+            ////um -> studium, stadium....
+            //_suffix = "um";
+            //if (EndsWith(_suffix))
+            //{
+            //    RemovePart(TermLength - _suffix.Length, _suffix.Length);
+            //    return;
+            //}
 
-            GenitivePlural();
+            //GenitivePlural();
             return;
         }
 
@@ -166,7 +166,7 @@ namespace Lucene.Net.Analysis.Hunspell
         /// <returns></returns>
         private bool Foreign(string suffix)
         {
-            String s = TryRemovePart(Term.Length - suffix.Length, suffix.Length);
+            String s = TryRemovePart(TermLength - suffix.Length, suffix.Length);
             if (ForeignWordsBeforeIA.Any(x => s.EndsWith(x)))
             {
                 return true;
@@ -182,7 +182,7 @@ namespace Lucene.Net.Analysis.Hunspell
         /// <returns></returns>
         private bool Overstemming(string suffix)
         {
-            string s = TryRemovePart(Term.Length - suffix.Length, suffix.Length);
+            string s = TryRemovePart(TermLength - suffix.Length, suffix.Length);
             if (Vowels.Any(x => s.Contains(x))) {
                 return false;
             }
@@ -309,22 +309,26 @@ namespace Lucene.Net.Analysis.Hunspell
         /// <returns></returns>
         private static List<string[]> CreateSuffixes()
         {
-            List<string[]> suffixes = new List<string[]>();     
-            suffixes.Add(new string[] {
-                "aa", "aom", "at", "atá", "atách", "atám", "atami", "ati", "au", "ä", "äa", "äom", "ät", "ätá", "ätách", "ätám", "ätami", "äti", "äu",
-                "ej", "encami", "ence", "encoch", "encom", "eniec", "é", "ého", "ému",
-                "iach", "iam", "iami", "ie", "ií", "iou", "iu", "ím",
-                "ov", "ovi", "ovia",
-                "ú",
-                "y", "ý", "ých", "ým", "ými" 
-            });
-            suffixes.Add(new String[] {
-                "ach", "ami", "á", "ách", "ám",
-                "e",
-                "ia", "ii", "í",
-                "o", "och", "om", "ou" });
-            suffixes.Add(new String[] { "a", "mi", "u" });
-            suffixes.Add(new String[] { "i" });
+            List<string[]> suffixes = new List<string[]>();
+            //suffixes.Add(new string[] {
+            //    "aa", "aom", "at", "atá", "atách", "atám", "atami", "ati", "au", "ä", "äa", "äom", "ät", "ätá", "ätách", "ätám", "ätami", "äti", "äu",
+            //    "ej", "encami", "ence", "encoch", "encom", "eniec", "é", "ého", "ému",
+            //    "iach", "iam", "iami", "ie", "ií", "iou", "iu", "ím",
+            //    "ov", "ovi", "ovia",
+            //    "ú",
+            //    "y", "ý", "ých", "ým", "ými" 
+            //});
+            //suffixes.Add(new String[] {
+            //    "ach", "ami", "á", "ách", "ám",
+            //    "e",
+            //    "ia", "ii", "í",
+            //    "o", "och", "om", "ou" });
+            //suffixes.Add(new String[] { "a", "mi", "u" });
+            //suffixes.Add(new String[] { "i" });
+
+            // using only basic suffixes to handle named entities
+            suffixes.Add(new String[] { "a", "e", "i", "om", "ou", "ovi", "y" });
+            suffixes.Add(new String[] { "o", "u" });
 
             return suffixes;
         }
