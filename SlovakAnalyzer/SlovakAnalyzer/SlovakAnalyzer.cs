@@ -12,7 +12,7 @@ namespace SlovakAnalyzer
 {
     public class SlovakAnalyzer : StandardAnalyzer
     {
-        public SlovakAnalyzer() : base(Version.LUCENE_30, new StringReader(Properties.Resources.sk_SK_stopwords))
+        public SlovakAnalyzer() : base(Version.LUCENE_30, new HashSet<string>() /*, new StringReader(Properties.Resources.sk_SK_stopwords)*/)
         {
 
         }
@@ -20,15 +20,12 @@ namespace SlovakAnalyzer
         public override TokenStream TokenStream(string fieldName, TextReader reader)
         {
             TokenStream stream = base.TokenStream(fieldName, reader);
-            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_30), stream, STOP_WORDS_SET);
             using (var affixStream = GenerateStreamFromString(Encoding.UTF8.GetString(Properties.Resources.sk_SK_aff)))
             using (var dictionaryStream = GenerateStreamFromString(Properties.Resources.sk_SK_dic))
             {
                 var dict = new HunspellDictionary(affixStream, dictionaryStream);
                 stream = new HunspellStemFilter(stream, dict);
             }
-            stream = new LowerCaseFilter(stream);
-            stream = new StopFilter(StopFilter.GetEnablePositionIncrementsVersionDefault(Version.LUCENE_30), stream, STOP_WORDS_SET);   
 
             return stream;
         }

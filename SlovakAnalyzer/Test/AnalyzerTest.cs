@@ -15,7 +15,7 @@ namespace SLovakAnalyzerTest
         public void Slovak_analyzer_test()
         {
             var inputString = "Keďže poľnohospodári Finstatu, Chirany, Lega, U. S. Steelu Košice a dubu z finstat.sk v Zambii preferujú skôr všestranné a spoľahlivé traktory s ľahkou údržbou...";
-            var expectedString = "keďže poľnohospodár finstat chiran lego u steel košic dub finstat.sk zambi preferovať skôr všestranný spoľahlivý traktor ľahký údržba";
+            var expectedString = "keďže poľnohospodár finstat chiran lego u s steel košic a dub z finstat.sk v zambi preferovať skôr všestranný a spoľahlivý traktor s ľahký údržba";
             List<string> tokens = new List<string>();
             var analyzer = new SlovakAnalyzer.SlovakAnalyzer();
             var tokenStream = analyzer.TokenStream(null, new StringReader(inputString));
@@ -61,7 +61,7 @@ namespace SLovakAnalyzerTest
         public void Slovak_analyzer_parsequerystring_test()
         {
             var inputString = "Finstat Finstate Finstatu Finstatom Baťa Baťu Chirana Chirane Rajo a.s. Rajom";
-            var expectedString = "finstat finstat finstat finstat bať bať chiran chiran raj raj";
+            var expectedString = "finstat finstat finstat finstat bať bať chiran chiran raj as raj";
             List<string> tokens = new List<string>();
             var analyzer = new SlovakAnalyzer.SlovakAnalyzer();
             var outputString = analyzer.ParseQueryString(inputString);
