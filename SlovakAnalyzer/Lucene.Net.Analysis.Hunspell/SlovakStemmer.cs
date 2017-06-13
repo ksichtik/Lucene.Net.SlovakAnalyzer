@@ -183,6 +183,10 @@ namespace Lucene.Net.Analysis.Hunspell
         private bool Overstemming(string suffix)
         {
             string s = TryRemovePart(TermLength - suffix.Length, suffix.Length);
+            if (s.Length <= 2)
+            {
+                return true;
+            }
             if (Vowels.Any(x => s.Contains(x))) {
                 return false;
             }
