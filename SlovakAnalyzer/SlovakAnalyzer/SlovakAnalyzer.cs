@@ -12,23 +12,38 @@ namespace SlovakAnalyzer
 {
     public class SlovakAnalyzer : StandardAnalyzer
     {
-        public SlovakAnalyzer() : base(Version.LUCENE_30, new HashSet<string>() /*, new StringReader(Properties.Resources.sk_SK_stopwords)*/)
+        /// <summary>
+        /// Cached hunspell dictionary
+        /// </summary>
+        private static HunspellDictionary _hunspellDictionary;
+        /// <summary>
+        /// Static constructor to load the hunspell dictionary from resources
+        /// </summary>
+        static SlovakAnalyzer()
         {
-
+            _hunspellDictionary = LoadHunspellDictionaryFromResources();
         }
 
-        public override TokenStream TokenStream(string fieldName, TextReader reader)
+        public SlovakAnalyzer() : base(Version.LUCENE_30, new HashSet<string>() /*, new StringReader(Properties.Resources.sk_SK_stopwords)*/)
         {
-            TokenStream stream = base.TokenStream(fieldName, reader);
+            
+        }
+
+        private static HunspellDictionary LoadHunspellDictionaryFromResources()
+        {
             using (var affixStream = GenerateStreamFromString(Encoding.UTF8.GetString(Properties.Resources.sk_SK_aff)))
             using (var dictionaryStream = GenerateStreamFromString(Properties.Resources.sk_SK_dic))
             {
-                var dict = new HunspellDictionary(affixStream, dictionaryStream);
-                stream = new HunspellStemFilter(stream, dict);
+                return new HunspellDictionary(affixStream, dictionaryStream);
             }
-
-            return stream;
         }
+        public override TokenStream TokenStream(string fieldName, TextReader reader)
+        {
+            TokenStream stream = base.TokenStream(fieldName, reader);
+
+            return new HunspellStemFilter(stream, _hunspellDictionary); ;
+        }
+
 
         public string ParseQueryString(string queryString)
         {
